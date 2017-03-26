@@ -83,18 +83,31 @@ function apiaiCall(text, sender,res) {
     request.on('response', function(response) {
         var result = response.result;
         console.log(response.result);
+        var empty = 'Sorry, I do have the information right now';
         if(response && result) {
             speech = result.fulfillment.speech
             if(speech == '') {
               if(result.contexts[0].name === 'cpt-hour') {
-                  res.json(model[result.contexts[0].name][result.parameters.semester]);
+                  if(result.parameters.semester) {
+                    res.json(model[result.contexts[0].name][result.parameters.semester]);
+                  }
+                  else{
+                    res.json(empty)
+                  }
               }
               else if (result.contexts[0].name === 'cpt-duration') {
-                  res.json(model[result.contexts[0].name][result.parameters.final][result.parameters.semester]);
-              }
+                  if(result.parameters.final) {
+                    res.json(model[result.contexts[0].name][result.parameters.final][result.parameters.semester]);
+                  }
+                  else{
+                    res.json(empty)
+                  }
+                }
             } else {
                 res.json(speech)
             }
+        } else {
+            res.json(empty)
         }
 
     });
