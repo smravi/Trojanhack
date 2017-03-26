@@ -27,6 +27,12 @@ app.use(bodyParser.urlencoded({
 
 // Process application/json
 app.use(bodyParser.json());
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
 
 // Index route
 app.get('/', function(req, res) {
@@ -42,7 +48,6 @@ app.get('/', function(req, res) {
 // });
 
 app.get('/getDetails', function(req, res) {
-
     text = req.query.text;
     sender = req.query.senderId;
     apiaiCall(text, sender,res);
