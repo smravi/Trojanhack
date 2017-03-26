@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var apiai = require('apiai');
 var request = require('request');
 var app = express();
+var model = require('./matchquery.json');
 
 
 // Setting port to default 5000 if there are no assigned ports
@@ -11,7 +12,7 @@ app.set('port', (process.env.PORT || 5000));
 
 // authenticating into Facebook and API.AI
 
-var apiaiApp = apiai('aaa5c9044eed4d17a34d256c110849c1');
+var apiaiApp = apiai('558b62ae515d45e9a38b516f6df3a6c8');
 
 console.log(apiaiApp)
 
@@ -80,10 +81,22 @@ function apiaiCall(text, sender,res) {
     }); //sends text request to api.ai
 
     request.on('response', function(response) {
-        if(response && response.result) {
-            speech = response.result.fulfillment.speech
+        var result = response.result;
+        console.log(response.result);
+        if(response && result) {
+            speech = result.fulfillment.speech
+            if(speech == '') {
+              if(result.contexts[0].name === 'cpt-hour') {
+                  res.json(model[result.contexts[0].name][result.parameters.semester]);
+              }
+              else if (result.contexts[0].name === 'cpt-duration') {
+                  res.json(model[result.contexts[0].name][result.parameters.final][result.parameters.semester]);
+              }
+            } else {
+                res.json(speech)
+            }
         }
-      res.json(speech)
+
     });
 
     request.on('error', function(error) {

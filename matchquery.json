@@ -1,0 +1,19 @@
+{
+  "cpt-hour":{
+      "fall": "40 hours",
+      "spring": "20 hours",
+      "summer": "20 hours"
+  },
+  "cpt-duration": {
+      "yes": {
+        "fall": "Aug21-Dec13",
+        "spring": "Jan9-May12",
+        "summer": "May15-Aug8"
+      },
+      "no": {
+        "fall": "Aug21-Jan7",
+        "spring": "Jan9-May12",
+        "summer": "May15-Aug20"
+      }
+  }
+}
